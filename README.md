@@ -20,7 +20,7 @@
 
   
 
-> The repository with processed samples, ground truth data, and CNV predictions for real and simulated datasets to reproduce the analyses in the paper can be found here: <a  href="https://doi.org/10.5281/zenodo.13997011"  target="_blank">**ExactCN results reproduction**</a>
+> The repository with processed samples, ground truth data, and CN estimations for real and simulated datasets to reproduce the analyses in the paper can be found here: <a  href="https://doi.org/10.5281/zenodo.17693515)"  target="_blank">**ExactCN results reproduction**</a>
 
   
 
@@ -107,7 +107,7 @@ Erfan FarhangKia†, Ahmet Arda Ceylan†, Mert Gençtürk, Mehmet Alper Yılmaz
 
   
 
-For easy requirement handling, you can use ExactCN_environment.yml files to initialize conda environment with requirements installed:
+For easy requirement handling, you can use exactcn_environment.yml files to initialize conda environment with requirements installed:
 
   
 
@@ -138,7 +138,7 @@ Note that the provided environment yml file is for Linux systems. For MacOS user
 
 ## Instructions Manual for ExactCN
 
-Important notice: Please call the ExactCN_call.py script from the scripts directory.
+Important notice: Please call the call_exactcn.py script from the scripts directory.
 
   
 
@@ -155,7 +155,7 @@ Important notice: Please call the ExactCN_call.py script from the scripts direct
 
 #### -bs, --batch_size
 
-- Batch size to be used to perform CNV call on the samples.
+- Batch size to be used to perform CN estimation on the samples.
 
   
 
@@ -191,7 +191,7 @@ Important notice: Please call the ExactCN_call.py script from the scripts direct
 -Number of parallel worker processes to spawn for processing samples. Use this to speed up inference across multiple samples (Default: 2).
 
 #### -v, --vocab
-- Relative or direct path to the `gene_vocab.txt` file. _Highly Recommended:_ Providing the specific vocabulary file used during training ensures that gene IDs are mapped consistently. If omitted, the script attempts to build it from the input file.
+- Relative or direct path to the `gene_vocab.txt` file. Providing the specific vocabulary file used during training ensures that gene IDs are mapped consistently. If omitted, the script attempts to build it from the input file.
 
 #### -g, --gpu
 
@@ -308,7 +308,7 @@ $  source  call_exactcn.sh
 
 ### Output file of ExactCN
 
-- At the end of the CNV calling procedure, ExactCN will write its output file to the directory given with -o option. In this tutorial it is ./exactcn_results
+- At the end of the CN estimation procedure, ExactCN will write its output file to the directory given with -o option. In this tutorial it is ./exactcn_results
 
 - Output file of ExactCN is a tab-delimited.
 
@@ -320,7 +320,7 @@ $  source  call_exactcn.sh
   
   
 
-<img  src="./exactcn_example_output.png"  style="width: 40%;"  class="center">
+<img  src="./images/exactcn_example_output.png"  style="width: 40%;"  class="center">
 
   
 
@@ -449,7 +449,7 @@ $  bash  Anaconda3-version.num-Linux-x86_64.sh
 
 ```shell
 
-$  conda  env  create  --name  exactcn_env  -f  ExactCN_environment.yml
+$  conda  env  create  --name  exactcn_env  -f  exactcn_environment.yml
 
 $  conda  activate  exactcn_env
 
@@ -507,7 +507,7 @@ You can change the argument parameters within the script to run it on cpu.
 - At the end of ExactCN Finetuning, the script will save its model weights file to the directory given with -o option. In this tutorial it is ./exactcn_finetuned_model_weights
 
   
-## Instructions Manual for ExactCN^SMN^
+## Instructions Manual for ExactCN<sub>SMN</sub>
 
 Important notice: Please call the call_exactcn_smn.py script from the scripts directory.
 
@@ -526,7 +526,7 @@ Important notice: Please call the call_exactcn_smn.py script from the scripts di
 
 #### -bs, --batch_size
 
-- Batch size to be used to perform CNV estimation on the samples.
+- Batch size to be used to perform CN estimation on the samples.
 
   
 
@@ -682,7 +682,7 @@ $  source  call_exactcn_smn.sh
 
 ### Output file of ExactCN^SMN^
 
-- At the end of the CNV calling procedure, ExactCN^SMN^ will write its output file to the directory given with -o option. In this tutorial it is ./exactcn_smn_results
+- At the end of the CN estimation procedure, ExactCN^SMN^ will write its output file to the directory given with -o option. In this tutorial it is ./exactcn_smn_results
 
 - Output file of ExactCN is a tab-delimited.
 
@@ -694,7 +694,7 @@ $  source  call_exactcn_smn.sh
   
   
 
-<img  src="./exactcn_smn_example_output.png"  style="width: 40%;"  class="center">
+<img  src="./images/exactcn_smn_example_output.png"  style="width: 40%;"  class="center">
   
 
 ---
