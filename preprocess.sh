@@ -4,7 +4,7 @@ NPY_OUTPUT_DIR="./processed_samples_npy"
 FINAL_H5_FILE="./data/all_samples_updated.h5"
 
 
-TARGET_BED="hglft_genome_64dc_dcbaa0.bed"
+TARGET_BED="hglft_genome_64dc_dcbaa0_unique.bed"
 
 
 LABELS_DIR="./finetune_example_data/ground_truth_labels"
