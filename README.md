@@ -29,7 +29,7 @@
   
 
 
-<img  src="./images/exactcn_system_figure.pdf"  style="width: 100%;"  class="center">
+<img  src="./images/exactcn_system_figure.png"  style="width: 100%;"  class="center">
 
   
 
@@ -262,7 +262,7 @@ $  bash  Anaconda3-version.num-Linux-x86_64.sh
 
 ```shell
 
-$  conda  env  create  --name  exactcn_env  -f  ExactCN_environment.yml
+$  conda  env  create  --name  exactcn_env  -f  exactcn_environment.yml
 
 $  conda  activate  exactcn_env
 
@@ -320,7 +320,7 @@ $  source  call_exactcn.sh
   
   
 
-<img  src="./images/exactcn_example_output.png"  style="width: 40%;"  class="center">
+<img  src="./images/exactcn_example_out.png"  style="width: 40%;"  class="center">
 
   
 
@@ -507,7 +507,7 @@ You can change the argument parameters within the script to run it on cpu.
 - At the end of ExactCN Finetuning, the script will save its model weights file to the directory given with -o option. In this tutorial it is ./exactcn_finetuned_model_weights
 
   
-## Instructions Manual for ExactCN<sub>SMN</sub>
+## Instructions Manual for ExactCN-SMN
 
 Important notice: Please call the call_exactcn_smn.py script from the scripts directory.
 
@@ -538,7 +538,7 @@ Important notice: Please call the call_exactcn_smn.py script from the scripts di
 
 #### -o, --output
 
-- Relative or direct output directory path to write ExactCN^SMN^output file.
+- Relative or direct output directory path to write ExactCN-SMN output file.
 
   
 
@@ -590,7 +590,7 @@ Important notice: Please call the call_exactcn_smn.py script from the scripts di
 
   
 
-> We provide an example small-sized BAM file and show how to run ExactCN^SMN^ on this toy dataset.
+> We provide an example small-sized BAM file and show how to run ExactCN-SMN on this toy dataset.
 
 
 
@@ -666,7 +666,7 @@ $  source  preprocess_samples_smn.sh
 
   
 
-- Here, we demonstrate an example to run ExactCN^SMN^ on gpu device 0, and obtain exone-level CN prediction on SMN region.
+- Here, we demonstrate an example to run ExactCN-SMN on gpu device 0, and obtain exone-level CN prediction on SMN region.
 
 - Please run the following script:
 
@@ -682,19 +682,19 @@ $  source  call_exactcn_smn.sh
 
 ### Output file of ExactCN^SMN^
 
-- At the end of the CN estimation procedure, ExactCN^SMN^ will write its output file to the directory given with -o option. In this tutorial it is ./exactcn_smn_results
+- At the end of the CN estimation procedure, ExactCN-SMN will write its output file to the directory given with -o option. In this tutorial it is ./exactcn_smn_results
 
 - Output file of ExactCN is a tab-delimited.
 
 
-- Columns in the gene-level output file of ExactCN^SMN^ are the following with order: 1. Chromosome, 2. Start Position, 3. End Position, 4. Gene Name 5. CNV Calling Result 6. CN Estimation
+- Columns in the gene-level output file of ExactCN-SMN are the following with order: 1. Chromosome, 2. Start Position, 3. End Position, 4. Gene Name 5. CNV Calling Result 6. CN Estimation
 
-- Following figure is an example of ExactCN^SMN^ exone-level output file.
+- Following figure is an example of ExactCN-SMN exone-level output file.
 
   
   
 
-<img  src="./images/exactcn_smn_example_output.png"  style="width: 40%;"  class="center">
+<img  src="./images/exactcn_smn_example_out.png"  style="width: 40%;"  class="center">
   
 
 ---
