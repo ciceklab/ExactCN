@@ -13,7 +13,7 @@
   
 
 >  ExactCN is a deep learning-based method for estimating **exact integer copy numbers** at the exon level from whole-exome sequencing (WES) data using read-depth signals.
->  
+>  Beyond exome-wide prediction, the model is designed to be **fine-tuned** for specific targets. We provide **ExactCN-SMN**, a specialized version optimized for the SMN1/2 locus, to demonstrate how the framework can be adapted for other clinically relevant and challenging genes.
 
   
  
@@ -662,7 +662,7 @@ $  source  preprocess_samples_smn.sh
 
   
 
-### Step-3: Run ExactCN^SMN^ on data obtained in Step-2
+### Step-3: Run ExactCN-SMN on data obtained in Step-2
 
   
 
@@ -680,7 +680,7 @@ $  source  call_exactcn_smn.sh
 
 
 
-### Output file of ExactCN^SMN^
+### Output file of ExactCN-SMN
 
 - At the end of the CN estimation procedure, ExactCN-SMN will write its output file to the directory given with -o option. In this tutorial it is ./exactcn_smn_results
 
@@ -689,7 +689,7 @@ $  source  call_exactcn_smn.sh
 
 - Columns in the gene-level output file of ExactCN-SMN are the following with order: 1. Chromosome, 2. Start Position, 3. End Position, 4. Gene Name 5. CNV Calling Result 6. CN Estimation
 
-- Following figure is an example of ExactCN-SMN exone-level output file.
+- Following figure is an example of ExactCN-SMN exone-level output file:
 
   
   
