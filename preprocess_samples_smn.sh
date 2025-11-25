@@ -18,7 +18,6 @@ mkdir -p "$NPY_OUTPUT_DIR"
 mkdir -p "$(dirname "$FINAL_H5_FILE")"
 
 # --- 3. Run Standard Pipeline ---
-
 echo "Starting Step 1: BAM Indexing and Depth Calculation..."
 for filename in "$INPUT_DIR"/*.bam; do
     [ -e "$filename" ] || continue

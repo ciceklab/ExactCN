@@ -549,7 +549,7 @@ def main():
         )
         scheduler.step()
 
-        # overwrite-only save at epoch end (to fine-tune output dir)
+        # overwrite-only save at epoch end
         if isinstance(model, nn.DataParallel):
             torch.save(model.module.state_dict(), latest_path_out)
         else:

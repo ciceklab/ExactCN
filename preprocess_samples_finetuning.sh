@@ -17,8 +17,7 @@ mkdir -p "$READ_DEPTH_DIR"
 mkdir -p "$NPY_OUTPUT_DIR"
 mkdir -p "$(dirname "$FINAL_H5_FILE")"
 
-# --- 3. Run Pipeline ---
-
+# --- 3. Run Pipeline --
 echo "Starting Step 1: BAM Indexing and Depth Calculation..."
 for filename in "$INPUT_DIR"/*.bam; do
     [ -e "$filename" ] || continue
@@ -56,7 +55,7 @@ python3 ./scripts/compress_to_h5.py \
     --compression gzip \
     --level 4
 
-# --- NEW STEP ADDED HERE ---
+
 echo "Starting Step 4: Annotating HDF5 with Gene Names..."
 python3 ./scripts/annotate_exons.py \
     --in-h5 "$FINAL_H5_FILE" \
