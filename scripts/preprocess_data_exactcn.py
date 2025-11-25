@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """
 Pre-processing for ECOLÉ-Genotyper regression
+UPDATED: Supports Inference Mode (No Ground Truth Labels required)
 
 Output
 ------
 signals      float32  (N_exons, 4, 1000)   A,T,C,G coverage
 meta         int32    (N_exons, 3)         chr, start, end  (1-based)
-copy_number  int8     (N_exons,)           summed CN (0 …)
+copy_number  int8     (N_exons,)           summed CN (Training: Real values | Inference: -1)
+gene_name    bytes    (N_exons,)           Gene Name (Default: NA)
 """
 
 import os, argparse, logging, traceback
@@ -18,7 +20,8 @@ import pandas as pd
 argp = argparse.ArgumentParser()
 argp.add_argument("--rd_dir",   required=True, help="*.txt.gz read-depth files")
 argp.add_argument("--targets",  required=True, help="BED/TSV chr start end")
-argp.add_argument("--labels",   required=True, help="Groundtruth_*.csv folder")
+# CHANGED: labels is now OPTIONAL
+argp.add_argument("--labels",   default=None,  help="Groundtruth_*.csv folder (Optional for inference)")
 argp.add_argument("--out",      required=True, help="Output folder for .npy")
 argp.add_argument("--threads",  type=int, default=4)
 args = argp.parse_args()
@@ -33,12 +36,14 @@ NT_COLS  = ["A", "T", "C", "G"]
 PAD_VAL  = -1.0
 SLICE_SZ = 1000
 
+# Load Targets (Inject dummy NA for gene_name if missing)
 targets = (
     pd.read_csv(args.targets, sep="\t", header=None,
                 names=["chr", "start", "end"])
       .astype({"start":"int32", "end":"int32"})
 )
 targets = targets[~targets.chr.isin(["chrX", "chrY"])].reset_index(drop=True)
+targets["gene_name"] = "NA" 
 
 def label_token_to_cn(tok:str) -> int:
     tok = tok.strip("<>").upper()
@@ -49,13 +54,12 @@ def build_signal(df_chr:pd.DataFrame, start:int, end:int) -> np.ndarray:
     exon_len = end - start
     sig = np.full((4, SLICE_SZ), PAD_VAL, dtype=np.float32)
 
-    if exon_len == 0:# treat zero-length as full deletion
+    if exon_len == 0:
         sig[:] = 0.0
         return sig
 
     if exon_len > SLICE_SZ:
         trim = exon_len - SLICE_SZ
-        # keep the RIGHt 1000 bp
         start += trim
         exon_len = SLICE_SZ
 
@@ -66,26 +70,25 @@ def build_signal(df_chr:pd.DataFrame, start:int, end:int) -> np.ndarray:
         for i, nt in enumerate(NT_COLS):
             tmp[i, rel] = rows[nt].values
 
-    sig[:, SLICE_SZ - exon_len :] = tmp # left-pad
+    sig[:, SLICE_SZ - exon_len :] = tmp 
     return sig
 
 def process_sample(rd_file: str, idx: int, total: int):
     sample  = rd_file.split(".", 1)[0]
     out_npy = os.path.join(args.out, f"{sample}.npy")
 
-    #––– see if we can skip (or if we need to re-do) –––
     if os.path.exists(out_npy):
         try:
             existing = np.load(out_npy, allow_pickle=True).item()
             assert isinstance(existing, dict)
-            for key in ("signals","meta","copy_number"):
+            for key in ("signals","meta","copy_number", "gene_name"): 
                 assert key in existing
         except Exception:
-            logging.warning(f"[{idx}/{total}] {sample} – existing .npy is corrupted, re-processing")
+            logging.warning(f"[{idx}/{total}] {sample} – existing .npy corrupted, re-processing")
             try: os.remove(out_npy)
             except OSError: pass
         else:
-            logging.info(f"[{idx}/{total}] {sample} – already done and valid, skipping")
+            logging.info(f"[{idx}/{total}] {sample} – already done, skipping")
             return
 
     try:
@@ -98,41 +101,55 @@ def process_sample(rd_file: str, idx: int, total: int):
         rd_df.POS = rd_df.POS.astype("int32")
         rd_by_chr = {c: df for c, df in rd_df.groupby("REF")}
 
-        # load labels, compute total CN
-        lab_df = pd.read_csv(os.path.join(args.labels, f"Groundtruth_{sample}.csv"),
-                             sep="\t")
-        lab_df["cn"] = (
-            lab_df.label_parent_0.map(label_token_to_cn) +
-            lab_df.label_parent_1.map(label_token_to_cn)
-        )
+        # --- LOGIC BRANCH: Do we have labels? ---
+        label_file = os.path.join(args.labels, f"Groundtruth_{sample}.csv") if args.labels else None
+        
+        has_groundtruth = False
+        if label_file and os.path.exists(label_file):
+            has_groundtruth = True
+        
+        if has_groundtruth:
+            # === TRAINING MODE ===
+            lab_df = pd.read_csv(label_file, sep="\t")
+            lab_df["cn"] = (
+                lab_df.label_parent_0.map(label_token_to_cn) +
+                lab_df.label_parent_1.map(label_token_to_cn)
+            )
+            # Inner merge: Only keep targets that have labels
+            merged = (
+                targets
+                  .merge(
+                    lab_df[["target_chr","target_start","target_end","cn"]],
+                    left_on  = ["chr","start","end"],
+                    right_on = ["target_chr","target_start","target_end"],
+                    how="inner"
+                  )
+                  .loc[:, ["chr","start","end","cn","gene_name"]]
+            )
+        else:
+            # === INFERENCE MODE ===
+            # No labels? Use all targets and set CN = -1 (Dummy)
+            merged = targets.copy()
+            merged["cn"] = -1 # Placeholder value for unknown CN
+            # Ensure correct column order
+            merged = merged[["chr", "start", "end", "cn", "gene_name"]]
 
-        # merge once, to only the targets we actually need
-        merged = (
-            targets
-              .merge(
-                lab_df[["target_chr","target_start","target_end","cn"]],
-                left_on  = ["chr","start","end"],
-                right_on = ["target_chr","target_start","target_end"],
-                how="inner"
-              )
-              .loc[:, ["chr","start","end","cn"]]
-        )
-
-        # build per-chromosome lists of (start,end,cn)
+        # Group by chromosome for processing
         intervals_by_chr = {
-            chrom: list(zip(g.start.values, g.end.values, g.cn.values))
+            chrom: list(zip(g.start.values, g.end.values, g.cn.values, g.gene_name.values))
             for chrom, g in merged.groupby("chr")
         }
 
-        sigs, metas, cns = [], [], []
+        sigs, metas, cns, genes = [], [], [], []
         for chrom, recs in intervals_by_chr.items():
             df_chr = rd_by_chr.get(chrom)
             if df_chr is None:
                 continue
-            for start, end, cn in recs:
+            for start, end, cn, gn in recs:
                 sigs .append(build_signal(df_chr, start, end))
                 metas.append([start, end, int(chrom.lstrip("chr"))])
                 cns  .append(cn)
+                genes.append(gn)
 
         if not sigs:
             logging.warning(f"[{idx}/{total}] {sample} – no exons found")
@@ -141,10 +158,12 @@ def process_sample(rd_file: str, idx: int, total: int):
         np.save(out_npy, {
             "signals"     : np.stack(sigs).astype(np.float32),
             "meta"        : np.asarray(metas, dtype=np.int32),
-            "copy_number" : np.asarray(cns,   dtype=np.int8)
+            "copy_number" : np.asarray(cns,   dtype=np.int8),
+            "gene_name"   : np.asarray(genes, dtype='S')
         }, allow_pickle=True)
 
-        logging.info(f"[{idx}/{total}] {sample} – written ({len(sigs)} exons)")
+        mode_str = "Training" if has_groundtruth else "Inference"
+        logging.info(f"[{idx}/{total}] {sample} – written ({len(sigs)} exons) [{mode_str} Mode]")
 
     except Exception:
         logging.error(f"[{idx}/{total}] {sample} – FAILED\n{traceback.format_exc()}")

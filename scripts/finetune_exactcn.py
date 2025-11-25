@@ -181,7 +181,13 @@ class HDF5ExonDataset(Dataset):
             sig  = grp['signals'][e].astype(np.float32)
             meta = grp['meta'][e].astype(np.int32)  # [start,end,chr,...]
             cn   = float(grp['copy_number'][e])
-            gene_name = grp['gene_name'][e]
+            #gene_name = grp['gene_name'][e]
+            # --- FIX START ---
+            if 'gene_name' in grp:
+                gene_name = grp['gene_name'][e]
+            else:
+                gene_name = b'NA' # Default to NA if missing
+            # --- FIX END ---
             gname = gene_name.decode() if isinstance(gene_name, (bytes, np.bytes_)) else str(gene_name)
             exid  = int(grp['exon_id'][e]) if 'exon_id' in grp else -1
         gene_id = self._map_gene(gname)
@@ -238,7 +244,7 @@ class CNVRegressor(nn.Module):
         self.emb_exon = nn.Embedding(MAX_EXON_ID+1, D_MODEL)
         self.pos = LocalSinusoidalPositionalEmbedding(D_MODEL)
         self.cls = nn.Parameter(torch.randn(1,1,D_MODEL))
-        self.backbone = Performer(dim=D_MODEL, depth=DEPTH, heads=HEADS,
+        self.backbone = Performer(dim=D_MODEL, depth=DEPTH, heads=HEADS, dim_head=64,
                                   ff_dropout=0.1, attn_dropout=0.1)
         self.reg_head = nn.Sequential(
             nn.LayerNorm(D_MODEL),
@@ -495,7 +501,7 @@ def main():
         sampler=sampler,
         drop_last=False,
         num_workers=4,
-        pin_memory=True,
+        pin_memory=False,
         persistent_workers=True
     )
     epoch_total = len(train_ds)

@@ -175,7 +175,7 @@ class CNVRegressor(nn.Module):
         self.emb_exon = nn.Embedding(MAX_EXON_ID + 1, D_MODEL)
         self.pos = LocalSinusoidalPositionalEmbedding(D_MODEL)
         self.cls = nn.Parameter(torch.randn(1, 1, D_MODEL))
-        self.backbone = Performer(dim=D_MODEL, depth=DEPTH, heads=HEADS,
+        self.backbone = Performer(dim=D_MODEL, depth=DEPTH, heads=HEADS, dim_head=64,
                                   ff_dropout=0.1, attn_dropout=0.1)
         self.reg_head = nn.Sequential(
             nn.LayerNorm(D_MODEL),
@@ -190,7 +190,7 @@ class CNVRegressor(nn.Module):
         tok = self.tok(sig_n, valid_mask)
         e_chr = self.emb_chr(meta[:, 2].long().clamp(min=0, max=22)).unsqueeze(1)
         e_gene = self.emb_gene(gene_id.clamp(min=0)).unsqueeze(1)
-        e_exon = self.emb_exon(exon_id.clamp(min=0, max=MAX_EXON_ID)).unsqueeze(1)
+        e_exon = self.emb_exon(exon_id.long().clamp(min=0, max=MAX_EXON_ID)).unsqueeze(1)
         e_ctx = e_chr + e_gene + e_exon
         x = tok + self.pos(B) + e_ctx
         cls_tok = self.cls.expand(B, 1, -1) + e_ctx
@@ -246,7 +246,7 @@ def cn_array_to_index(cn_values: np.ndarray) -> np.ndarray:
     return tri
 
 # Inference
-@torch.inference_mode()
+@torch.no_grad()
 def predict_one_sample(h5_path: str, sample_name: str, model: nn.Module, device, batch_size: int, gene2id: dict):
     with h5py.File(h5_path, 'r') as h5f:
         grp = h5f[sample_name]

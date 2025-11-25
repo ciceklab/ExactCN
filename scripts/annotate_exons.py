@@ -154,10 +154,10 @@ def add_top_level_exon_table(h5file: h5py.File, bed_annot: pd.DataFrame):
 
 def main():
     ap = argparse.ArgumentParser(description="In-place: add gene_name & exon_id to each sample in HDF5; also write annotated BED TSV.")
-    ap.add_argument("--genes-info", default="/mnt/alperyilmaz/ECOLE_SUPERIEURE/ECOLE_SUPERIEURE_Training_Genes/genesInfo.txt")
-    ap.add_argument("--exons-bed", default="/data6/erfan/ECOLE_CN/data/hglft_genome_64dc_dcbaa0_unique.bed")
-    ap.add_argument("--in-h5", default="/data6/erfan/ECOLE_CN/data/all_samples_updated.h5")
-    ap.add_argument("--out-bed", default="/data6/erfan/ECOLE_CN/data/hglft_genome_64dc_dcbaa0_unique.annotated.tsv")
+    ap.add_argument("--genes-info", default="/")
+    ap.add_argument("--exons-bed", default="/")
+    ap.add_argument("--in-h5", default="/")
+    ap.add_argument("--out-bed", default="/")
     ap.add_argument("--write-top-level", action="store_true", help="Also store a canonical /exon_annotation table in the same HDF5.")
     args = ap.parse_args()
 

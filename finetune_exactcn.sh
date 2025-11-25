@@ -1,1 +1,1 @@
-python ./scripts/finetune_exactcn.py --input ./processed_samples/annotated_train.h5 --norm_file normalization_stats.csv --output ./exactcn_finetuned_model_weights --pretrained_dir ./models/exactcn_model.sh --batch_size 32 --epochs 50 --learning_rate 0.0001 --gpu 0
+python ./scripts/finetune_exactcn.py --input ./data/all_samples_updated.h5 --norm_file channel_stats.csv --output ./exactcn_finetuned_model_weights --pretrained_dir ./models/exactcn_model.sh --batch_size 8 --epochs 50 --learning_rate 0.0001 --gpu 2

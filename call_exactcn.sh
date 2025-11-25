@@ -1,1 +1,1 @@
-python ./scripts/call_exactcn.py --input ./processed_samples/all_samples.h5 --model ./models/exactcn_model.pt --norm_file normalization_stats.csv --output ./exactcn_calls_output --vocab gene_vocab.txt --batch_size 64 --gpu 0 --jobs 4
+python ./scripts/call_exactcn.py --input ./data/all_samples_updated.h5 --model ./models/exactcn_model.pt --norm_file channel_stats.csv --output ./exactcn_calls_output --vocab gene_vocab.txt --batch_size 64 --gpu 0 --jobs 4
