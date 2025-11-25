@@ -14,7 +14,7 @@
 
 > ExactCN is a deep learning-based method for estimating **exact integer copy numbers** at the exon level from whole-exome sequencing (WES) data using read-depth signals.
 
-> Beyond exome-wide prediction, the model is designed to be **fine-tuned** for specific targets. We provide **ExactCN-SMN**, a specialized version optimized for the SMN1/2 Exon 7, to demonstrate how the framework can be adapted for other clinically relevant and challenging genes.
+> Beyond exome-wide prediction, the model is designed to be **fine-tuned** for specific targets. We provide **ExactCN-SMN**, a specialized version optimized for the SMN1/2 locus, to demonstrate how the framework can be adapted for other clinically relevant and challenging genes.
 
   
 
