@@ -163,7 +163,7 @@ For easy requirement handling, you can use exactcn_environment.yml files to init
 
   
 
-$  conda  env  create  --name  exactcn_env  -f  exactcn_env.yml
+$  conda  env  create  --name  exactcn_env  -f  exactcn_environment.yml
 
   
 
@@ -750,7 +750,7 @@ $  conda  activate  exactcn_env
 
   
 
-$  source  finetune_preprocess_samples_finetune.sh
+$  source  preprocess_samples_finetuning.sh
 
   
 
@@ -1006,7 +1006,7 @@ $  bash  Anaconda3-version.num-Linux-x86_64.sh
 
   
 
-$  conda  env  create  --name  exactcn_env  -f  exactcn_env.yml
+$  conda  env  create  --name  exactcn_env  -f  exactcn_environment.yml
 
   
 
