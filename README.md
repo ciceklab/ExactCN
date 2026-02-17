@@ -109,6 +109,10 @@ Erfan FarhangKia†, Ahmet Arda Ceylan†, Mert Gençtürk, Mehmet Alper Yılmaz
 
 - [Features](#features)
 
+
+- [Pretrained Models](#PretrainedModels)
+  
+
   
 
 - [Instructions Manual](#instructions-manual)
@@ -155,6 +159,12 @@ Erfan FarhangKia†, Ahmet Arda Ceylan†, Mert Gençtürk, Mehmet Alper Yılmaz
 
 For easy requirement handling, you can use exactcn_environment.yml files to initialize conda environment with requirements installed:
 
+
+## Pretrained Models
+
+Pretrained model weights for both **ExactCN** and **ExactCN-SMN**, corresponding to the case study and experimental results reported in the paper, are provided in the `./models/` directory.
+
+These models are shared to facilitate reproducibility and allow users to directly evaluate or build upon the reported results without retraining from scratch.
   
 
   
