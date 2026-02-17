@@ -160,12 +160,7 @@ Erfan FarhangKia†, Ahmet Arda Ceylan†, Mert Gençtürk, Mehmet Alper Yılmaz
 For easy requirement handling, you can use exactcn_environment.yml files to initialize conda environment with requirements installed:
 
 
-## Pretrained Models
 
-Pretrained model weights for both **ExactCN** and **ExactCN-SMN**, corresponding to the case study and experimental results reported in the paper, are provided in the `./models/` directory.
-
-These models are shared to facilitate reproducibility and allow users to directly evaluate or build upon the reported results without retraining from scratch.
-  
 
   
 
@@ -206,7 +201,12 @@ Note that the provided environment yml file is for Linux systems. For MacOS user
 - ExactCN provides GPU support optionally. See [GPU Support](#gpu-support) section.
 
   
+## Pretrained Models
 
+Pretrained model weights for both **ExactCN** and **ExactCN-SMN**, corresponding to the case study and experimental results reported in the paper, are provided in the `./models/` directory.
+
+These models are shared to facilitate reproducibility and allow users to directly evaluate or build upon the reported results without retraining from scratch.
+  
   
 
 ## Instructions Manual for ExactCN
