@@ -814,11 +814,10 @@ You can change the argument parameters within the script to run it on cpu.
 
 ## Instructions Manual for ExactCN-SMN
 
-  
->ExactCN-SMN is a specialised fine tuned model for aggregated SMN region CNV calling on Exon 7. 
-We provide a specialized fine-tuned version of ExactCN, called ExactCNSMN, designed to call CNVs for the SMN1 and SMN2 genes.
 
->Due to the extreme sequence similarity between SMN1 and SMN2, standard WES-based callers often produce unreliable results. ExactCNSMN specifically focuses on Exon 7, as this region contains the critical base difference (c.840C>T) that distinguishes SMN1 from SMN2 and disrupts a splicing enhancer. Furthermore, Exon 7 is the only region with reliable mappability in the 1000 Genomes Project WES data used for training.
+>ExactCN provides specialized, fine-tuned model variants—ExactCN-SMN, ExactCN-C4, ExactCN-FCGR3, and ExactCN-AMY2A—designed to accurately call copy numbers for clinically relevant loci with high sequence homology.
+
+>The following implementation guide uses ExactCN-SMN as a representative example for the workflow of all specialized models. This variant specifically focuses on Exon 7, which contains the critical base difference (c.840C>T) used to distinguish SMN1 from SMN2.
 
 Important notice: Please call the call_exactcn_smn.py script from the scripts directory.
 
