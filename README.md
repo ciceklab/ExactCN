@@ -815,7 +815,7 @@ You can change the argument parameters within the script to run it on cpu.
 ## Instructions Manual for Gene Specific ExactCN Models
 
 
->ExactCN provides specialized, fine-tuned model variants (ExactCN-SMN, ExactCN-C4, ExactCN-FCGR3, and ExactCN-AMY2A) designed to accurately call copy numbers for clinically relevant loci with high sequence homology.
+>ExactCN provides specialized, fine-tuned model variants (ExactCN-SMN, ExactCN-C4, ExactCN-FCGR3, ExactCN-Somatic, and ExactCN-AMY2A) designed to accurately call copy numbers for clinically relevant loci with high sequence homology.
 
 >The following implementation guide uses ExactCN-SMN as a representative example for the workflow of all specialized models. This variant specifically focuses on Exon 7, which contains the critical base difference (c.840C>T) used to distinguish SMN1 from SMN2.
 
