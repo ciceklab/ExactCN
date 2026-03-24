@@ -812,7 +812,7 @@ You can change the argument parameters within the script to run it on cpu.
 
   
 
-## Instructions Manual for ExactCN-SMN
+## Instructions Manual for Gene Specific ExactCN Models
 
 
 >ExactCN provides specialized, fine-tuned model variants—ExactCN-SMN, ExactCN-C4, ExactCN-FCGR3, and ExactCN-AMY2A—designed to accurately call copy numbers for clinically relevant loci with high sequence homology.
