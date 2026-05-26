@@ -22,7 +22,7 @@
 
   
 
-> The repository with processed samples, ground truth data, and CN estimations for real and simulated datasets to reproduce the analyses in the paper can be found here: <a  href="https://doi.org/10.5281/zenodo.17693515)"  target="_blank">**ExactCN results reproduction**</a>
+> The repository with processed samples, ground truth data, and CN estimations for real and simulated datasets to reproduce the analyses in the paper can be found here: <a  href="https://doi.org/10.5281/zenodo.17693515"  target="_blank">**ExactCN results reproduction**</a>
 
   
 
